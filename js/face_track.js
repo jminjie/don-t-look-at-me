@@ -1,3 +1,5 @@
+'use strict';
+
 var vid = document.getElementById('hiddenVideo');
 var recording = false;
 
@@ -34,20 +36,6 @@ function gumSuccess( stream ) {
         requestAnimFrame(drawLoop);
     }
 }
-
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
-
-window.requestAnimFrame = (function() {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-            return window.setTimeout(callback, 1000/60);
-        };
-})();
 
 // set up video
 function initFace() {

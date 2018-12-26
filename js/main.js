@@ -10,6 +10,22 @@ const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
 
 window.onload = async function() {
+    navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+    window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
+
+    window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function(callback, element) {
+                return window.setTimeout(callback, 1000/60);
+            };
+    })();
+
     await startCamera();
     initFace();
 };
@@ -22,7 +38,6 @@ function playRecording() {
   recordedVideo.controls = false;
   recordedVideo.play();
 }
-
 
 function handleSourceOpen(event) {
   console.log('MediaSource opened');
