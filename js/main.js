@@ -8,10 +8,10 @@ let sourceBuffer;
 
 const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
-// const recordButton = document.querySelector('button#record');
 
 window.onload = async function() {
     await startCamera();
+    initFace();
 };
 
 function playRecording() {

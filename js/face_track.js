@@ -1,9 +1,8 @@
 var vid = document.getElementById('hiddenVideo');
+var recording = false;
 
 function gumSuccess( stream ) {
     // add camera stream if getUserMedia succeeded
-    console.log("gumSuccess called markmliu");
-
     if ("srcObject" in vid) {
         vid.srcObject = stream;
     } else {
@@ -22,35 +21,17 @@ function gumSuccess( stream ) {
     trackingStarted = true;
     // start loop to draw face
     drawLoop(false);
-    function drawLoop(recording) {
-        if (!recording && ctrack.getScore() < 0.45) {
+    function drawLoop() {
+        if (!recording && ctrack.getScore() >= 0.5) {
             console.log("start recording and hide");
-            while (true) {
-                console.log("looping");
-                try {
-                    startRecordingAndHide();
-                    break;
-                }
-                catch (error) {
-                    // just continue trying
-                }
-
-            }
+            startRecordingAndHide();
             recording = true;
-        } else if (recording && ctrack.getScore() > 0.45) {
+        } else if (recording && ctrack.getScore() < 0.5) {
             console.log("stop recording and play");
-            while (true) {
-                try {
-                    stopRecordingAndPlay();
-                    break;
-                }
-                catch (error) {
-                    // just continue trying
-                }
-            }
+            stopRecordingAndPlay();
             recording= false;
         }
-        requestAnimFrame(drawLoop.bind(recording));
+        requestAnimFrame(drawLoop);
     }
 }
 
@@ -69,10 +50,12 @@ window.requestAnimFrame = (function() {
 })();
 
 // set up video
-if (navigator.mediaDevices) {
-    navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess);
-} else if (navigator.getUserMedia) {
-    navigator.getUserMedia({video : true}, gumSuccess, gumFail);
-} else {
-    alert("Your browser does not support getUserMedia.");
+function initFace() {
+    if (navigator.mediaDevices) {
+        navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess);
+    } else if (navigator.getUserMedia) {
+        navigator.getUserMedia({video : true}, gumSuccess, gumFail);
+    } else {
+        alert("Your browser does not support getUserMedia.");
+    }
 }
