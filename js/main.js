@@ -50,6 +50,9 @@ function handleDataAvailable(event) {
 }
 
 function startRecordingAndHide() {
+    if (typeof window.stream === 'undefined') {
+        throw "window.stream is not yet defined";
+    }
     // recordButton.disabled = true;
     // playButton.disabled = false;
     startRecording();
@@ -58,6 +61,9 @@ function startRecordingAndHide() {
 }
 
 function stopRecordingAndPlay() {
+    if (typeof window.stream === 'undefined') {
+        throw "window.stream is not yet defined";
+    }
     recordedVideo.hidden = false;
     // recordButton.disabled = false;
     // playButton.disabled = true;
@@ -85,6 +91,7 @@ function startRecording() {
   }
 
   try {
+    console.log("type is " + typeof window.stream);
     mediaRecorder = new MediaRecorder(window.stream, options);
   } catch (e) {
     console.error('Exception while creating MediaRecorder:', e);
@@ -111,10 +118,14 @@ function handleSuccess(stream) {
   window.stream = stream;
 }
 
+function handleFailure(stream) {
+  console.log('getUserMedia() didnt get stream:', stream);
+    window.stream = null;
+}
+
 async function init(constraints) {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    handleSuccess(stream);
+    navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleFailure);
   } catch (e) {
     console.error('navigator.getUserMedia error:', e);
     errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
