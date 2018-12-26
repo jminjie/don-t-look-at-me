@@ -11,6 +11,7 @@ const recordedVideo = document.querySelector('video#recorded');
 const mona = document.querySelector('img#mona');
 
 window.onload = async function() {
+    createHiddenVideoElement();
     navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
         navigator.msGetUserMedia;

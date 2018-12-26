@@ -1,9 +1,28 @@
 'use strict';
 
-var vid = document.getElementById('hiddenVideo');
 var recording = false;
 
+// adds hidden video element to body.
+// This is done by nesting it in a div.
+function createHiddenVideoElement() {
+    var outerDiv = document.createElement("div");
+    outerDiv.style.cssText = "overflow:hidden;position:relative;";
+    outerDiv.setAttribute("ind", "container");
+    document.body.appendChild(outerDiv);
+    var hiddenVideo = document.createElement("video");
+    hiddenVideo.setAttribute("id", "hiddenVideo");
+    hiddenVideo.setAttribute("width", "400");
+    hiddenVideo.setAttribute("height", "300");
+    hiddenVideo.setAttribute("preload", "auto");
+    hiddenVideo.style.cssText = "overflow:hidden;right:-50px;position:absolute;";
+    hiddenVideo.loop = true;
+    hiddenVideo.playsinline = true;
+    hiddenVideo.autoplay = true;
+    outerDiv.appendChild(hiddenVideo);
+}
+
 function gumSuccess(stream) {
+    var vid = document.getElementById('hiddenVideo');
     // add camera stream if getUserMedia succeeded
     if ("srcObject" in vid) {
         vid.srcObject = stream;
