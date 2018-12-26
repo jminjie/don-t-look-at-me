@@ -3,6 +3,7 @@ var vid = document.getElementById('hiddenVideo');
 function gumSuccess( stream ) {
     // add camera stream if getUserMedia succeeded
     console.log("gumSuccess called markmliu");
+
     if ("srcObject" in vid) {
         vid.srcObject = stream;
     } else {
@@ -24,11 +25,29 @@ function gumSuccess( stream ) {
     function drawLoop(recording) {
         if (!recording && ctrack.getScore() < 0.45) {
             console.log("start recording and hide");
-            startRecordingAndHide();
+            while (true) {
+                console.log("looping");
+                try {
+                    startRecordingAndHide();
+                    break;
+                }
+                catch (error) {
+                    // just continue trying
+                }
+
+            }
             recording = true;
         } else if (recording && ctrack.getScore() > 0.45) {
             console.log("stop recording and play");
-            stopRecordingAndPlay();
+            while (true) {
+                try {
+                    stopRecordingAndPlay();
+                    break;
+                }
+                catch (error) {
+                    // just continue trying
+                }
+            }
             recording= false;
         }
         requestAnimFrame(drawLoop.bind(recording));
