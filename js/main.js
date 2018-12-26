@@ -12,20 +12,7 @@ const recordedVideo = document.querySelector('video#recorded');
 
 window.onload = async function() {
     await startCamera();
-    // startRecordingAndHide();
 };
-
-/*
-recordButton.addEventListener('click', () => {
-    startRecordingAndHide();
-});
-
-
-const playButton = document.querySelector('button#play');
-playButton.addEventListener('click', () => {
-    stopRecordingAndPlay();
-});
-*/
 
 function playRecording() {
   const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
@@ -53,8 +40,6 @@ function startRecordingAndHide() {
     if (typeof window.stream === 'undefined') {
         throw "window.stream is not yet defined";
     }
-    // recordButton.disabled = true;
-    // playButton.disabled = false;
     startRecording();
     recordedVideo.pause();
     recordedVideo.hidden = true;
@@ -65,8 +50,6 @@ function stopRecordingAndPlay() {
         throw "window.stream is not yet defined";
     }
     recordedVideo.hidden = false;
-    // recordButton.disabled = false;
-    // playButton.disabled = true;
     stopRecording();
     playRecording();
 }
@@ -104,13 +87,21 @@ function startRecording() {
     console.log('Recorder stopped: ', event);
   };
   mediaRecorder.ondataavailable = handleDataAvailable;
-  mediaRecorder.start(10); // collect 10ms of data
-  console.log('MediaRecorder started', mediaRecorder);
+  try {
+    mediaRecorder.start(10); // collect 10ms of data
+    console.log('MediaRecorder started', mediaRecorder);
+  } catch (error) {
+    console.log("Coudn't start mediaRecorder");
+  }
 }
 
 function stopRecording() {
-  mediaRecorder.stop();
-  console.log('Recorded Blobs: ', recordedBlobs);
+  try {
+    mediaRecorder.stop();
+    console.log('Recorded Blobs: ', recordedBlobs);
+  } catch (error) {
+    console.log("Couldn't stop mediaRecorder");
+  }
 }
 
 function handleSuccess(stream) {
