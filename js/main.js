@@ -8,21 +8,24 @@ let sourceBuffer;
 
 const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
-const recordButton = document.querySelector('button#record');
+// const recordButton = document.querySelector('button#record');
 
 window.onload = async function() {
     await startCamera();
-    startRecordingAndHide();
+    // startRecordingAndHide();
 };
 
+/*
 recordButton.addEventListener('click', () => {
     startRecordingAndHide();
 });
+
 
 const playButton = document.querySelector('button#play');
 playButton.addEventListener('click', () => {
     stopRecordingAndPlay();
 });
+*/
 
 function playRecording() {
   const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
@@ -47,8 +50,8 @@ function handleDataAvailable(event) {
 }
 
 function startRecordingAndHide() {
-    recordButton.diabled = true;
-    playButton.disabled = false;
+    // recordButton.disabled = true;
+    // playButton.disabled = false;
     startRecording();
     recordedVideo.pause();
     recordedVideo.hidden = true;
@@ -56,8 +59,8 @@ function startRecordingAndHide() {
 
 function stopRecordingAndPlay() {
     recordedVideo.hidden = false;
-    recordButton.disabled = false;
-    playButton.disabled = true;
+    // recordButton.disabled = false;
+    // playButton.disabled = true;
     stopRecording();
     playRecording();
 }
@@ -121,7 +124,7 @@ async function init(constraints) {
 async function startCamera() {
   const constraints = {
     video: {
-      width: 1280, height: 720 
+      width: 1280, height: 720
     }
   };
   console.log('Using media constraints:', constraints);
