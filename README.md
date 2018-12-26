@@ -6,4 +6,6 @@ To serve index.html on port 8080 run `python -m SimpleHttpServer 8080`.
 
 ## Credits
 This is based on code from
-[WebRTC](https://github.com/webrtc/samples/tree/gh-pages/src/content/getusermedia/record).
+[WebRTC](https://github.com/webrtc/samples/tree/gh-pages/src/content/getusermedia/record)
+and
+[clmtrackr](https://github.com/auduno/clmtrackr/blob/dev/examples/clm_video.html).
