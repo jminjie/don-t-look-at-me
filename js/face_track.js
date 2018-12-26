@@ -3,7 +3,7 @@
 var vid = document.getElementById('hiddenVideo');
 var recording = false;
 
-function gumSuccess( stream ) {
+function gumSuccess(stream) {
     // add camera stream if getUserMedia succeeded
     if ("srcObject" in vid) {
         vid.srcObject = stream;
@@ -13,16 +13,14 @@ function gumSuccess( stream ) {
     vid.onloadedmetadata = function() {
         vid.play();
     }
-    var ctrack = new clm.tracker();
-    ctrack.init();
-    var trackingStarted = false;
     // start video
     vid.play();
     // start tracking
+    var ctrack = new clm.tracker();
+    ctrack.init();
     ctrack.start(vid);
-    trackingStarted = true;
     // start loop to draw face
-    drawLoop(false);
+    drawLoop();
     function drawLoop() {
         if (!recording && ctrack.getScore() >= 0.5) {
             console.log("start recording and hide");
@@ -31,19 +29,8 @@ function gumSuccess( stream ) {
         } else if (recording && ctrack.getScore() < 0.5) {
             console.log("stop recording and play");
             stopRecordingAndPlay();
-            recording= false;
+            recording = false;
         }
         requestAnimFrame(drawLoop);
-    }
-}
-
-// set up video
-function initFace() {
-    if (navigator.mediaDevices) {
-        navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess);
-    } else if (navigator.getUserMedia) {
-        navigator.getUserMedia({video : true}, gumSuccess, gumFail);
-    } else {
-        alert("Your browser does not support getUserMedia.");
     }
 }
